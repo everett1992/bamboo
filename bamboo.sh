@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 #:: Define some helpfull functions
 
@@ -73,11 +73,36 @@ build_sed() {
   echo "$sed_expressions"
 }
 
-# List of all scaffold subfiles, filenames are relative to the scaffold's dir.
-files=$(cd $scaffolds_dir/$scaffold; find -mindepth 1)
-
+# Build a sed expression to do all bamboo replacements/
 sed_s="$(build_sed)"
 
+
+#:: Directories
+
+dirs=$(cd $scaffolds_dir/$scaffold; find -mindepth 1 -type d)
+
+debug "Creating directories"
+for dir in $dirs; do
+  origional_dir="$scaffolds_dir/$scaffold/$dir"
+  renamed_dir="$project_path/$(echo "$dir" | sed -s "$sed_s" -)"
+  mkdir $renamed_dir
+  chmod --reference "$origional_dir" "$renamed_dir"
+done
+
+#:: Files
+
+debug "Creating files"
+
+# Copy files from the scaffold to the generated location,
+# replacing placeholders with their values.
+# Preserve file permissions
+
+# List of all scaffold subfiles, filenames are relative to the scaffold's dir.
+files=$(cd $scaffolds_dir/$scaffold; find -mindepth 1 -type f)
+
 for file in $files; do
-  sed -s "$sed_s" "$scaffolds_dir/$scaffold/$file"
+  origional_file="$scaffolds_dir/$scaffold/$file"
+  renamed_file="$project_path/$(echo "$file" | sed -s "$sed_s" -)"
+  sed -s "$sed_s" "$origional_file" > "$renamed_file"
+  chmod --reference "$origional_file" "$renamed_file"
 done
