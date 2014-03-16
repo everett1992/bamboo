@@ -17,7 +17,7 @@ Like handlebars expressions within `{{` and `}}` marks will be replaced with
 values from the bamboo env. I think I'll use `_{` and `}_` to mark variables
 to replace.
 
-Why I chose `_{var}_`
+Why I choose `_{var}_`
 - Expressions can appear in filenames so charecters used must
   be legal in filenames. Preferably without excaping the charectres first.
   `_`, `{`, and `}` could be used in zsh, and bash without escaping or
