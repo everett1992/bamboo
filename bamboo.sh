@@ -29,6 +29,8 @@ replacements=(
   ["first_name"]="Caleb"
   ["last_name"]="Everett"
 
+  ["today"]="$(date +%d-%m-%y)"
+
   ["scaffold"]="$scaffold"
   ["project_name"]="$project_name"
   ["project_path"]="$project_path"
