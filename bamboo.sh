@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 
 #:: Define some helpfull functions
 
